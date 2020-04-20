@@ -1,0 +1,17 @@
+{
+  "name": "empower-covid-19",
+  "displayName": "empower-covid-19",
+  "expo": {
+    "name": "empower-covid-19",
+    "slug": "empower-covid-19",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
