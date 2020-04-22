@@ -1,0 +1,5 @@
+dist/
+build/
+android/
+ios/
+node_modules/
