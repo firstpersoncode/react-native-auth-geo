@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 
 import app from './app'
 import user from './user'
+import report from './report'
 
 export default () => {
     const composeEnhancers =
@@ -13,7 +14,8 @@ export default () => {
     const store = createStore(
         combineReducers({
             app,
-            user
+            user,
+            report
         }),
         {},
         composeEnhancers(applyMiddleware(thunk))

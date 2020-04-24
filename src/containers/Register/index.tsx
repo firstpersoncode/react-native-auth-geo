@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-    Container,
-    View,
-    Content,
-    Button,
-    Text,
-    Form,
-    Item,
-    Label,
-    Input,
-    DatePicker,
-    Textarea,
-    Toast
-} from 'native-base'
+import { View, Content, Button, Text, Form, Item, Label, Input, DatePicker, Textarea, Toast } from 'native-base'
 import { bindActionCreators } from 'redux'
 import { useDispatch } from 'react-redux'
 import * as Location from 'expo-location'
@@ -24,12 +11,16 @@ import { validateEmail, validatePhone } from '../../utils/validator'
 import style from './style'
 
 export default function Register({ navigation }: any) {
-    const [location, setLocation] = useState({} as any)
+    const [location, setLocation] = useState({ coords: { latitude: 0, longitude: 0 } } as any)
 
     const _setLocation = async () => {
+        const locationEnabled = await Location.hasServicesEnabledAsync()
         const { status } = await Location.requestPermissionsAsync()
-        if (status !== 'granted') {
-            setLocation({})
+        if (!(locationEnabled && status === 'granted')) {
+            alert(
+                'Lokasi diperlukan untuk melanjutkan pendaftaran, buka pengaturan dan izinkan aplikasi ini untuk mendapatkan lokasi Anda.'
+            )
+            navigation.goBack()
         }
 
         const location = await Location.getCurrentPositionAsync({})
@@ -133,103 +124,101 @@ export default function Register({ navigation }: any) {
     }
 
     return (
-        <Container>
-            <Content padder>
-                <Form>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.name}>
-                            <Label>Nama *</Label>
-                            <Input value={form.name} onChangeText={_setField('name')} onBlur={_setError('name')} />
-                        </Item>
-                    </View>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.email}>
-                            <Label>Email *</Label>
-                            <Input
-                                autoCompleteType="email"
-                                keyboardType="email-address"
-                                value={form.email}
-                                onChangeText={_setField('email')}
-                                onBlur={_setError('email')}
-                            />
-                        </Item>
-                    </View>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.password}>
-                            <Label>Password *</Label>
-                            <Input
-                                secureTextEntry
-                                value={form.password}
-                                onChangeText={_setField('password')}
-                                onBlur={_setError('password')}
-                            />
-                        </Item>
-                    </View>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.password}>
-                            <Label>Ulangi password *</Label>
-                            <Input
-                                secureTextEntry
-                                value={form.rePassword}
-                                onChangeText={_setField('rePassword')}
-                                onBlur={_setError('password')}
-                            />
-                        </Item>
-                    </View>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.phone}>
-                            <Label>No. Telfon *</Label>
-                            <Input
-                                autoCompleteType="tel"
-                                keyboardType="phone-pad"
-                                value={form.phone}
-                                onChangeText={_setField('phone')}
-                                onBlur={_setError('phone')}
-                            />
-                        </Item>
-                    </View>
-                    <View style={style.field}>
-                        <Label>Tanggal lahir *</Label>
-                        <View style={!error.dob ? style.fieldBorder : style.fieldBorderError}>
-                            <DatePicker
-                                defaultDate={new Date()}
-                                locale={'id'}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={'fade'}
-                                androidMode={'default'}
-                                placeHolderText="D/M/YYYY"
-                                placeHolderTextStyle={{ color: '#d3d3d3' }}
-                                onDateChange={_setDOBField}
-                                disabled={false}
-                            />
-                        </View>
-                    </View>
-                    <View style={style.field}>
-                        <Label>Alamat *</Label>
-                        <View style={!error.address ? style.fieldBorder : style.fieldBorderError}>
-                            <Textarea
-                                rowSpan={3}
-                                value={form.address}
-                                onChangeText={_setField('address')}
-                                onBlur={_setError('address')}
-                                underline={false}
-                                bordered={false}
-                            />
-                        </View>
-                    </View>
-                </Form>
-                <View style={style.buttonWrapper}>
-                    <Button block primary onPress={_submitForm}>
-                        <Text>Daftar</Text>
-                    </Button>
+        <Content padder>
+            <Form>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.name}>
+                        <Label>Nama *</Label>
+                        <Input value={form.name} onChangeText={_setField('name')} onBlur={_setError('name')} />
+                    </Item>
                 </View>
-                <View>
-                    <Button block transparent onPress={_login}>
-                        <Text>Sudah punya akun? login di sini</Text>
-                    </Button>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.email}>
+                        <Label>Email *</Label>
+                        <Input
+                            autoCompleteType="email"
+                            keyboardType="email-address"
+                            value={form.email}
+                            onChangeText={_setField('email')}
+                            onBlur={_setError('email')}
+                        />
+                    </Item>
                 </View>
-            </Content>
-        </Container>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.password}>
+                        <Label>Password *</Label>
+                        <Input
+                            secureTextEntry
+                            value={form.password}
+                            onChangeText={_setField('password')}
+                            onBlur={_setError('password')}
+                        />
+                    </Item>
+                </View>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.password}>
+                        <Label>Ulangi password *</Label>
+                        <Input
+                            secureTextEntry
+                            value={form.rePassword}
+                            onChangeText={_setField('rePassword')}
+                            onBlur={_setError('password')}
+                        />
+                    </Item>
+                </View>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.phone}>
+                        <Label>No. Telfon *</Label>
+                        <Input
+                            autoCompleteType="tel"
+                            keyboardType="phone-pad"
+                            value={form.phone}
+                            onChangeText={_setField('phone')}
+                            onBlur={_setError('phone')}
+                        />
+                    </Item>
+                </View>
+                <View style={style.field}>
+                    <Label>Tanggal lahir *</Label>
+                    <View style={!error.dob ? style.fieldBorder : style.fieldBorderError}>
+                        <DatePicker
+                            defaultDate={new Date()}
+                            locale={'id'}
+                            timeZoneOffsetInMinutes={undefined}
+                            modalTransparent={false}
+                            animationType={'fade'}
+                            androidMode={'default'}
+                            placeHolderText="D/M/YYYY"
+                            placeHolderTextStyle={{ color: '#d3d3d3' }}
+                            onDateChange={_setDOBField}
+                            disabled={false}
+                        />
+                    </View>
+                </View>
+                <View style={style.field}>
+                    <Label>Alamat *</Label>
+                    <View style={!error.address ? style.fieldBorder : style.fieldBorderError}>
+                        <Textarea
+                            rowSpan={3}
+                            value={form.address}
+                            onChangeText={_setField('address')}
+                            onBlur={_setError('address')}
+                            underline={false}
+                            bordered={false}
+                        />
+                    </View>
+                </View>
+            </Form>
+            <View style={style.buttonWrapper}>
+                <Button block primary onPress={_submitForm}>
+                    <Text>Daftar</Text>
+                </Button>
+            </View>
+            <View>
+                <Button block transparent onPress={_login}>
+                    <Text>Sudah punya akun? login di sini</Text>
+                </Button>
+            </View>
+        </Content>
     )
 }

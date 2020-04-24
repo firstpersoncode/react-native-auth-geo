@@ -37,6 +37,7 @@ export interface IAPPLocation {
 }
 
 interface IAppState {
+    drawer: boolean
     loading: boolean
     error: IAppError
     session: IAppSession
@@ -44,6 +45,7 @@ interface IAppState {
 }
 
 export const initialState: IAppState = {
+    drawer: false,
     loading: false,
     error: {},
     session: {},

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, View, Content, Button, Text, Form, Item, Label, Input } from 'native-base'
+import { View, Content, Button, Text, Form, Item, Label, Input } from 'native-base'
 import { bindActionCreators } from 'redux'
 import { useDispatch, useSelector } from 'react-redux'
 import CountDown from 'react-native-countdown-component'
@@ -57,43 +57,41 @@ export default function Verify() {
     }
 
     return (
-        <Container>
-            <Content padder>
-                <Form>
-                    <Text style={style.notif}>
-                        Kami telah mengirimkan kode verifikasi ke <Text style={{ color: 'blue' }}>{session.email}</Text>
-                        . Periksa kotak masuk Anda.
-                    </Text>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error}>
-                            <Label>Kode verifikasi</Label>
-                            <Input value={code} onChangeText={_setField} onBlur={_setError} />
-                        </Item>
-                    </View>
-                </Form>
-                <View style={style.buttonWrapper}>
-                    <Button full primary onPress={_submitForm}>
-                        <Text>Verifikasi</Text>
+        <Content padder>
+            <Form>
+                <Text style={style.notif}>
+                    Kami telah mengirimkan kode verifikasi ke <Text style={{ color: 'blue' }}>{session.email}</Text>.
+                    Periksa kotak masuk Anda.
+                </Text>
+                <View style={style.field}>
+                    <Item floatingLabel error={error}>
+                        <Label>Kode verifikasi</Label>
+                        <Input value={code} onChangeText={_setField} onBlur={_setError} />
+                    </Item>
+                </View>
+            </Form>
+            <View style={style.buttonWrapper}>
+                <Button full primary onPress={_submitForm}>
+                    <Text>Verifikasi</Text>
+                </Button>
+            </View>
+            <View>
+                {countDown ? (
+                    <CountDown
+                        until={30}
+                        size={20}
+                        onFinish={_toggleCountDown}
+                        digitStyle={{ backgroundColor: '#FFF' }}
+                        digitTxtStyle={{ color: 'blue' }}
+                        timeToShow={['S']}
+                        timeLabels={{ s: 'Kirim ulang kode verifikasi dalam 30 detik' }}
+                    />
+                ) : (
+                    <Button full transparent onPress={_resendCode}>
+                        <Text>Kirim ulang kode verifikasi</Text>
                     </Button>
-                </View>
-                <View>
-                    {countDown ? (
-                        <CountDown
-                            until={30}
-                            size={20}
-                            onFinish={_toggleCountDown}
-                            digitStyle={{ backgroundColor: '#FFF' }}
-                            digitTxtStyle={{ color: 'blue' }}
-                            timeToShow={['S']}
-                            timeLabels={{ s: 'Kirim ulang kode verifikasi dalam 30 detik' }}
-                        />
-                    ) : (
-                        <Button full transparent onPress={_resendCode}>
-                            <Text>Kirim ulang kode verifikasi</Text>
-                        </Button>
-                    )}
-                </View>
-            </Content>
-        </Container>
+                )}
+            </View>
+        </Content>
     )
 }

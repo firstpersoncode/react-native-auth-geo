@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_ERROR, SET_SESSION, SET_LOCATION } from './actions'
+import { SET_LOADING, SET_ERROR, SET_SESSION, SET_LOCATION, SET_DRAWER } from './actions'
 import { initialState } from './state'
 
 export default (state = initialState, { type, payload }: { type: string; payload: any }) => {
@@ -25,6 +25,12 @@ export default (state = initialState, { type, payload }: { type: string; payload
             return {
                 ...state,
                 location: payload
+            }
+
+        case SET_DRAWER:
+            return {
+                ...state,
+                drawer: payload
             }
 
         default:

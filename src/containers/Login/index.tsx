@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, View, Content, Button, Text, Form, Item, Label, Input, Toast } from 'native-base'
+import { View, Content, Button, Text, Form, Item, Label, Input, Toast } from 'native-base'
 import { bindActionCreators } from 'redux'
 import { useDispatch } from 'react-redux'
 
@@ -75,47 +75,45 @@ export default function Login({ navigation }: any) {
     }
 
     return (
-        <Container>
-            <Content padder>
-                <Form>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.email}>
-                            <Label>Email</Label>
-                            <Input
-                                autoCompleteType="email"
-                                keyboardType="email-address"
-                                value={form.email}
-                                onChangeText={_setField('email')}
-                                onBlur={_setError('email')}
-                            />
-                        </Item>
-                    </View>
-                    <View style={style.field}>
-                        <Item floatingLabel error={error.password}>
-                            <Label>Password</Label>
-                            <Input
-                                secureTextEntry
-                                value={form.password}
-                                onChangeText={_setField('password')}
-                                onBlur={_setError('password')}
-                            />
-                        </Item>
-                    </View>
-                </Form>
-                <View style={style.buttonWrapper}>
-                    <Button block primary onPress={_submitForm}>
-                        <Text>Masuk</Text>
-                    </Button>
+        <Content padder>
+            <Form>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.email}>
+                        <Label>Email</Label>
+                        <Input
+                            autoCompleteType="email"
+                            keyboardType="email-address"
+                            value={form.email}
+                            onChangeText={_setField('email')}
+                            onBlur={_setError('email')}
+                        />
+                    </Item>
                 </View>
-                <View>
-                    <Button block transparent onPress={_forgotPassword}>
-                        <Text>Lupa password</Text>
-                    </Button>
-                    <Button block transparent onPress={_register}>
-                        <Text>Belum punya akun? daftar di sini</Text>
-                    </Button>
+                <View style={style.field}>
+                    <Item floatingLabel error={error.password}>
+                        <Label>Password</Label>
+                        <Input
+                            secureTextEntry
+                            value={form.password}
+                            onChangeText={_setField('password')}
+                            onBlur={_setError('password')}
+                        />
+                    </Item>
                 </View>
-            </Content>
-        </Container>
+            </Form>
+            <View style={style.buttonWrapper}>
+                <Button block primary onPress={_submitForm}>
+                    <Text>Masuk</Text>
+                </Button>
+            </View>
+            <View>
+                <Button block transparent onPress={_forgotPassword}>
+                    <Text>Lupa password</Text>
+                </Button>
+                <Button block transparent onPress={_register}>
+                    <Text>Belum punya akun? daftar di sini</Text>
+                </Button>
+            </View>
+        </Content>
     )
 }

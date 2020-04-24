@@ -4,7 +4,7 @@ import { setLoading, setError } from '../app/actions'
 
 import { set, setData } from './actions'
 
-const baseUrl = 'http://192.168.43.21:5000/user'
+const baseUrl = 'http://192.168.1.33:5000/user'
 
 export const userData = () => async (dispatch: Dispatch) => {
     dispatch(setLoading(true))

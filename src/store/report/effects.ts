@@ -1,16 +1,17 @@
 import { Dispatch } from 'redux'
 
-import { setSession, setLoading, setError } from './actions'
+import { setLoading, setError } from '../app/actions'
 
-const baseUrl = 'http://192.168.1.33:5000/auth'
+import { set, setData } from './actions'
 
-export const sessionFetch = () => async (dispatch: Dispatch) => {
+const baseUrl = 'http://192.168.1.33:5000/report'
+
+export const reportData = () => async (dispatch: Dispatch) => {
     dispatch(setLoading(true))
 
     try {
-        const result = await fetch(baseUrl + '/me', {
+        const result = await fetch(baseUrl, {
             method: 'GET',
-            mode: 'cors',
             credentials: 'include',
             headers: {
                 Accept: 'application/json'
@@ -22,28 +23,67 @@ export const sessionFetch = () => async (dispatch: Dispatch) => {
         }
 
         const data = await result.json()
-        dispatch(setSession(data))
+        dispatch(setData(data))
         setTimeout(() => dispatch(setLoading(false)), 500)
 
         return data
     } catch (err) {
         setTimeout(() => dispatch(setLoading(false)), 500)
-        dispatch(setError({ statusCode: 302, message: 'Session required' }))
-        dispatch(setSession({}))
+        dispatch(setError(err))
+
         throw err
     }
 }
 
-interface IAppLogIn {
-    email: string
-    password: string
-}
-
-export const logIn = (body: IAppLogIn) => async (dispatch: Dispatch) => {
+export const reportFetch = (id: string) => async (dispatch: Dispatch) => {
     dispatch(setLoading(true))
 
     try {
-        const result = await fetch(baseUrl + '/login', {
+        const result = await fetch(baseUrl + '/' + id, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json'
+            }
+        })
+
+        if (!result.ok) {
+            throw await result.json()
+        }
+
+        const data = await result.json()
+        dispatch(set(data))
+        setTimeout(() => dispatch(setLoading(false)), 500)
+
+        return data
+    } catch (err) {
+        setTimeout(() => dispatch(setLoading(false)), 500)
+        dispatch(setError(err))
+
+        throw err
+    }
+}
+
+interface IUserFields {
+    status?: number
+    role?: number
+    name?: string
+    email?: string
+    phone?: string
+    dob?: string
+    address?: string
+    longitude?: number
+    latitude?: number
+    ntr?: number
+    nte?: number
+    ntm?: number
+}
+
+export const reportCreate = (body: IUserFields) => async (dispatch: Dispatch) => {
+    dispatch(setLoading(true))
+
+    try {
+        const result = await fetch(baseUrl, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -58,36 +98,7 @@ export const logIn = (body: IAppLogIn) => async (dispatch: Dispatch) => {
         }
 
         const data = await result.json()
-        // dispatch(setSession(data))
-        setTimeout(() => dispatch(setLoading(false)), 500)
-
-        return data
-    } catch (err) {
-        setTimeout(() => dispatch(setLoading(false)), 500)
-        dispatch(setError(err))
-
-        throw err
-    }
-}
-
-export const logOut = () => async (dispatch: Dispatch) => {
-    dispatch(setLoading(true))
-
-    try {
-        const result = await fetch(baseUrl + '/logout', {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                Accept: 'application/json'
-            }
-        })
-
-        if (!result.ok) {
-            throw await result.json()
-        }
-
-        const data = await result.json()
-        dispatch(setSession({}))
+        dispatch(set(data))
         setTimeout(() => dispatch(setLoading(false)), 500)
 
         return data
